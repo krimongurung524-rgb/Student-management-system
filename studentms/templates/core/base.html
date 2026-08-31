@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Student MS{% endblock %}</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(135deg, #e0f2fe, #fce7f3);
+        min-height: 100vh;
+        padding: 0 0 40px 0;
+    }
+    nav {
+        background: #ffffff;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border-radius: 0 0 20px 20px;
+        margin-bottom: 40px;
+    }
+    nav .logo { font-size: 20px; font-weight: 700; color: #6366f1; }
+    nav a {
+        color: #4338ca;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        margin-left: 20px;
+    }
+    nav a:hover { color: #6366f1; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    .btn-pill {
+        display: inline-block;
+        background: #6366f1;
+        color: #fff !important;
+        padding: 10px 22px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+        transition: transform 0.2s ease;
+    }
+    .btn-pill:hover { transform: translateY(-2px); }
+    .card {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        transition: transform 0.2s ease;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .card h3 { margin: 0 0 8px; font-size: 20px; color: #1e293b; }
+    .card .meta { color: #64748b; font-size: 14px; margin-bottom:8px; }
+    .badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 13px;
+        margin-right: 8px;
+        margin-bottom: 12px;
+    }
+    .badge-blue { background: #e0f2fe; color: #0369a1; }
+    .badge-purple { background: #ede9fe; color: #6d28d9; }
+    .badge-green { background: #ecfdf5; color: #059669; }
+    .view-btn {
+        display: inline-block;
+        background: #f1f5f9;
+        color: #4338ca;
+        padding: 8px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .view-btn:hover { background: #e0e7ff; }
+    .detail-card {
+        background: #fff;
+        border-radius: 28px;
+        padding: 36px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .detail-card h2 { margin: 0 0 16px; font-size: 28px; color: #1e293b; }
+    .detail-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+        align-items: center;
+    }
+    .detail-label {
+        font-size: 13px;
+        color: #94a3b8;
+        font-weight: 600;
+        min-width: 100px;
+    }
+    .detail-value { color: #1e293b; font-size: 15px; }
+    .form-card {
+        background: #fff;
+        border-radius: 28px;
+        padding: 36px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        max-width: 550px;
+        margin: 0 auto;
+    }
+    .form-card h2 { margin: 0 0 24px; color: #1e293b; }
+    .form-input {
+        width: 100%;
+        padding: 14px 18px;
+        margin-bottom: 16px;
+        border: none;
+        background: #f1f5f9;
+        border-radius: 16px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: box-shadow 0.2s ease;
+    }
+    .form-input:focus { box-shadow: 0 0 0 3px #c7d2fe; }
+    .form-card button {
+        width: 100%;
+        background: #6366f1;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+        transition: transform 0.2s ease;
+        margin-bottom: 12px;
+    }
+    .form-card button:hover { transform: translateY(-2px); }
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #4338ca;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .empty-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px;
+        text-align: center;
+        color: #94a3b8;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    /* Success/Error messages */
+    .messages { margin-bottom: 20px; }
+    .message {
+        padding: 14px 20px;
+        border-radius: 16px;
+        margin-bottom: 10px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .message-success { background: #ecfdf5; color: #059669; }
+    .message-error { background: #fee2e2; color: #ef4444; }
+</style>
+</head>
+<body>
+    {% include 'core/navbar.html' %}
+
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">
+                        {% if message.tags == 'success' %}✅{% else %}❌{% endif %}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
