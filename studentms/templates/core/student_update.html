@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit {{ student.full_name }} — Student MS{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>Edit Student</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div style="margin-bottom:4px;">
+                <label style="font-size:13px; color:#64748b; font-weight:600;">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <p style="color:#ef4444; font-size:12px; margin-top:-10px; margin-bottom:8px;">
+                        {{ field.errors.0 }}
+                    </p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">💾 Save Changes</button>
+        <a href="{% url 'student_detail' student.slug %}"
+           style="display:block; text-align:center; color:#64748b; font-size:14px; margin-top:8px;">
+            Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}
