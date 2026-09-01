@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Delete {{ student.full_name }} — Student MS{% endblock %}
+
+{% block content %}
+<div class="form-card" style="text-align:center;">
+    <h2 style="color:#ef4444; margin-bottom:16px;">🗑️ Delete Student</h2>
+    <p style="color:#64748b; margin-bottom:24px;">
+        "<strong>{{ student.full_name }}</strong>" want to delete permanently?<br>
+        we cannot undo action performed!
+    </p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit"
+                style="background:#ef4444; box-shadow: 0 4px 14px rgba(239,68,68,0.4);">
+            🗑️ Yes, Delete
+        </button>
+    </form>
+    <a href="{% url 'student_detail' student.slug %}"
+       style="display:block; text-align:center; color:#64748b; font-size:14px;">
+        Cancel
+    </a>
+</div>
+{% endblock %}
