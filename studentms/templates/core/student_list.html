@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% load custom_tags %}
+
+{% block title %}All Students — Student MS{% endblock %}
+
+{% block content %}
+    <h2 style="font-size:24px; font-weight:700; color:#1e293b; margin-bottom:24px;">
+        All Students
+    </h2>
+
+    {% for student in all_students %}
+        <div class="card" style="display:flex; align-items:center; gap:20px;">
+
+            {% if student.profile_photo %}
+                <img src="{{ student.profile_photo.url }}"
+                     alt="{{ student.full_name }}"
+                     style="width:64px; height:64px; border-radius:50%;
+                            object-fit:cover; flex-shrink:0;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            {% else %}
+                <div style="width:64px; height:64px; border-radius:50%;
+                            background:#e0e7ff; display:flex; align-items:center;
+                            justify-content:center; font-size:28px; flex-shrink:0;">
+                    {% gender_icon student.gender %}
+                </div>
+            {% endif %}
+
+            <div style="flex:1;">
+                <h3>{{ student.full_name }}</h3>
+                <p class="meta">📧 {{ student.email }}</p>
+                <p class="meta">📞 {{ student.phone }}</p>
+                <span class="badge badge-blue">{{ student.grade|grade_label }}</span>
+                <span class="badge badge-purple">{{ student.gender|capfirst }}</span>
+                <br>
+                <a class="view-btn" href="{% url 'student_detail' student.slug %}">
+                    View Details →
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="empty-card">No students found.</div>
+    {% endfor %}
+{% endblock %}
