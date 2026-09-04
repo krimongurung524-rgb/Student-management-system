@@ -49,12 +49,74 @@
             <span class="detail-value">{{ student.enrolled_at|date:"F d, Y" }}</span>
         </div>
 
-        <div style="margin-top:24px; display:flex; gap:12px;">
+        <!-- Abstract model fields -->
+        <div class="detail-row">
+            <span class="detail-label">Updated</span>
+            <span class="detail-value">{{ student.updated_at|date:"F d, Y" }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Status</span>
+            <span class="detail-value">
+                {% if student.is_active %}✅ Active{% else %}❌ Inactive{% endif %}
+            </span>
+        </div>
+
+        <!-- Profile section -->
+        {% if profile %}
+            <div style="margin-top:24px; padding-top:24px; border-top:1px solid #f1f5f9;">
+                <h3 style="margin-bottom:16px; color:#6366f1;">📋 Profile Details</h3>
+
+                {% if profile.bio %}
+                    <div class="detail-row">
+                        <span class="detail-label">Bio</span>
+                        <span class="detail-value">{{ profile.bio }}</span>
+                    </div>
+                {% endif %}
+                {% if profile.guardian_name %}
+                    <div class="detail-row">
+                        <span class="detail-label">Guardian</span>
+                        <span class="detail-value">{{ profile.guardian_name }}</span>
+                    </div>
+                {% endif %}
+                {% if profile.emergency_contact %}
+                    <div class="detail-row">
+                        <span class="detail-label">Emergency</span>
+                        <span class="detail-value">{{ profile.emergency_contact }}</span>
+                    </div>
+                {% endif %}
+                {% if profile.blood_group %}
+                    <div class="detail-row">
+                        <span class="detail-label">Blood Group</span>
+                        <span class="detail-value">{{ profile.blood_group }}</span>
+                    </div>
+                {% endif %}
+                {% if profile.facebook %}
+                    <div class="detail-row">
+                        <span class="detail-label">Facebook</span>
+                        <a href="{{ profile.facebook }}" target="_blank"
+                           style="color:#6366f1;">View Profile</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div style="margin-top:20px; background:#f8fafc; border-radius:16px;
+                        padding:16px; color:#94a3b8; font-size:14px;">
+                Profile details thapeko chaina।
+            </div>
+        {% endif %}
+
+        <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
             <a href="{% url 'student_update' student.slug %}"
                style="display:inline-block; background:#6366f1; color:#fff;
                       padding:10px 20px; border-radius:999px; text-decoration:none;
                       font-size:13px; font-weight:600;">
                 ✏️ Edit
+            </a>
+            <a href="{% url 'student_profile' student.slug %}"
+               style="display:inline-block; background:#ecfdf5; color:#059669;
+                      padding:10px 20px; border-radius:999px; text-decoration:none;
+                      font-size:13px; font-weight:600;">
+                📋 {% if profile %}Edit Profile{% else %}Add Profile{% endif %}
             </a>
             <a href="{% url 'student_delete' student.slug %}"
                style="display:inline-block; background:#fee2e2; color:#ef4444;
