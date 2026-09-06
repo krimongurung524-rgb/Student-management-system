@@ -135,6 +135,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Login/Logout redirect
-LOGIN_URL = '/auth/login/'
+LOGIN_URL = '/students/auth/login/'
 LOGIN_REDIRECT_URL = '/students/'
-LOGOUT_REDIRECT_URL = '/auth/login/'
+LOGOUT_REDIRECT_URL = '/students/auth/login/'

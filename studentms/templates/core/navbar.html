@@ -1,8 +1,23 @@
 <nav>
     <span class="logo">🎓 Student MS</span>
-    <div>
+    <div style="display:flex; align-items:center; gap:16px;">
         <a href="{% url 'student_list' %}">All Students</a>
         <a href="{% url 'student_search' %}">🔍 Search</a>
         <a href="{% url 'student_create' %}" class="btn-pill">+ Add Student</a>
+
+        {% if request.user.is_authenticated %}
+            <span style="color:#64748b; font-size:14px; font-weight:600;">
+                👤 {{ request.user.username }}
+            </span>
+            <form method="POST" action="{% url 'logout_view' %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit"
+                        style="background:#fee2e2; color:#ef4444; border:none;
+                               padding:8px 16px; border-radius:999px; cursor:pointer;
+                               font-size:13px; font-weight:600;">
+                    Logout
+                </button>
+            </form>
+        {% endif %}
     </div>
 </nav>

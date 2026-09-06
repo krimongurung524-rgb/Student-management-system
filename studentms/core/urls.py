@@ -1,7 +1,14 @@
 from django.urls import path
 from . import views
+from . import auth_views
 
 urlpatterns = [
+    # Auth URLs
+    path('auth/register/', auth_views.register_view, name='register_view'),
+    path('auth/login/', auth_views.login_view, name='login_view'),
+    path('auth/logout/', auth_views.logout_view, name='logout_view'),
+
+    # Student URLs
     path('', views.student_list, name='student_list'),
     path('create/', views.student_create, name='student_create'),
     path('search/', views.student_search, name='student_search'),
