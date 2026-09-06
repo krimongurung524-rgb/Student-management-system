@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import Student, StudentProfile
 from .forms import StudentForm, StudentProfileForm, StudentSearchForm
 
 
+@login_required
 def student_list(request):
     all_students = Student.objects.all()
     context = {'all_students': all_students}
     return render(request, 'core/student_list.html', context)
 
 
+@login_required
 def student_detail(request, slug):
     student = get_object_or_404(Student, slug=slug)
-    # Profile exist garcha ki chaina check
     try:
         profile = student.profile
     except StudentProfile.DoesNotExist:
@@ -21,6 +23,7 @@ def student_detail(request, slug):
     return render(request, 'core/student_detail.html', context)
 
 
+@login_required
 def student_create(request):
     if request.method == 'POST':
         form = StudentForm(request.POST, request.FILES)
@@ -36,6 +39,7 @@ def student_create(request):
     return render(request, 'core/student_create.html', context)
 
 
+@login_required
 def student_update(request, slug):
     student = get_object_or_404(Student, slug=slug)
     if request.method == 'POST':
@@ -52,6 +56,7 @@ def student_update(request, slug):
     return render(request, 'core/student_update.html', context)
 
 
+@login_required
 def student_delete(request, slug):
     student = get_object_or_404(Student, slug=slug)
     if request.method == 'POST':
@@ -63,6 +68,7 @@ def student_delete(request, slug):
     return render(request, 'core/student_delete.html', context)
 
 
+@login_required
 def student_search(request):
     form = StudentSearchForm(request.GET or None)
     results = []
@@ -81,11 +87,9 @@ def student_search(request):
     return render(request, 'core/student_search.html', context)
 
 
-# PROFILE — create ya update
+@login_required
 def student_profile(request, slug):
     student = get_object_or_404(Student, slug=slug)
-
-    # Profile already cha bhane update, chaina bhane create
     try:
         profile = student.profile
     except StudentProfile.DoesNotExist:
@@ -96,7 +100,6 @@ def student_profile(request, slug):
             form = StudentProfileForm(request.POST, instance=profile)
         else:
             form = StudentProfileForm(request.POST)
-
         if form.is_valid():
             profile_obj = form.save(commit=False)
             profile_obj.student = student
