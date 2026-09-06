@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login — Student MS</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(135deg, #e0f2fe, #fce7f3);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .auth-card {
+        background: #fff;
+        border-radius: 28px;
+        padding: 40px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .auth-card h2 {
+        text-align: center;
+        color: #1e293b;
+        margin-bottom: 8px;
+        font-size: 24px;
+    }
+    .auth-card p {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 14px;
+        margin-bottom: 28px;
+    }
+    .form-input {
+        width: 100%;
+        padding: 14px 18px;
+        margin-bottom: 16px;
+        border: none;
+        background: #f1f5f9;
+        border-radius: 16px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: box-shadow 0.2s ease;
+    }
+    .form-input:focus { box-shadow: 0 0 0 3px #c7d2fe; }
+    button {
+        width: 100%;
+        background: #6366f1;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+        margin-bottom: 16px;
+    }
+    button:hover { opacity: 0.9; }
+    .link { text-align: center; font-size: 14px; color: #64748b; }
+    .link a { color: #6366f1; text-decoration: none; font-weight: 600; }
+    .message { padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-size: 14px; font-weight: 600; }
+    .message-error { background: #fee2e2; color: #ef4444; }
+    .message-success { background: #ecfdf5; color: #059669; }
+    label { font-size: 13px; color: #64748b; font-weight: 600; display: block; margin-bottom: 4px; }
+    .error-text { color: #ef4444; font-size: 12px; margin-top: -10px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="auth-card">
+    <h2>🎓 Welcome Back!</h2>
+    <p>Login to Student Management System</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message message-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label>{{ field.label }}</label>
+                <input
+                    class="form-input"
+                    type="{{ field.field.widget.input_type }}"
+                    name="{{ field.html_name }}"
+                    placeholder="{{ field.label }}"
+                    {% if field.value %}value="{{ field.value }}"{% endif %}
+                >
+                {% if field.errors %}
+                    <p class="error-text">{{ field.errors.0 }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">🔐 Login</button>
+    </form>
+
+    <p class="link">
+        Don't have an account?
+        <a href="{% url 'register_view' %}">Register here</a>
+    </p>
+</div>
+</body>
+</html>
