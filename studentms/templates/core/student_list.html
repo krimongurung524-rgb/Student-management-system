@@ -1,43 +1,76 @@
 {% extends 'core/base.html' %}
 {% load custom_tags %}
 
-{% block title %}All Students — Student MS{% endblock %}
+{% block title %}Students — Student MS{% endblock %}
 
 {% block content %}
-    <h2 style="font-size:24px; font-weight:700; color:#1e293b; margin-bottom:24px;">
-        All Students
-    </h2>
 
-    {% for student in all_students %}
-        <div class="card" style="display:flex; align-items:center; gap:20px;">
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Total Students</div>
+        <div class="stat-value">{{ all_students|length }}</div>
+        <div class="stat-sub">Enrolled</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Active</div>
+        <div class="stat-value" style="color:#15803d;">{{ all_students|length }}</div>
+        <div class="stat-sub">This semester</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Logged in as</div>
+        <div class="stat-value" style="font-size:18px;">{{ request.user.username }}</div>
+        <div class="stat-sub">Administrator</div>
+    </div>
+</div>
 
+<div class="page-header">
+    <div>
+        <h1 class="page-title">All Students</h1>
+        <p class="page-subtitle">Manage and view student records</p>
+    </div>
+    <a href="{% url 'student_create' %}" class="btn btn-primary btn-lg">
+        + Add Student
+    </a>
+</div>
+
+{% for student in all_students %}
+    <div class="card">
+        <div class="card-avatar">
             {% if student.profile_photo %}
-                <img src="{{ student.profile_photo.url }}"
-                     alt="{{ student.full_name }}"
-                     style="width:64px; height:64px; border-radius:50%;
-                            object-fit:cover; flex-shrink:0;
-                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <img src="{{ student.profile_photo.url }}" alt="{{ student.full_name }}">
             {% else %}
-                <div style="width:64px; height:64px; border-radius:50%;
-                            background:#e0e7ff; display:flex; align-items:center;
-                            justify-content:center; font-size:28px; flex-shrink:0;">
-                    {% gender_icon student.gender %}
-                </div>
+                {% gender_icon student.gender %}
             {% endif %}
-
-            <div style="flex:1;">
-                <h3>{{ student.full_name }}</h3>
-                <p class="meta">📧 {{ student.email }}</p>
-                <p class="meta">📞 {{ student.phone }}</p>
+        </div>
+        <div class="card-info">
+            <div class="card-name">{{ student.full_name }}</div>
+            <div class="card-meta">
+                <span>📧 {{ student.email }}</span>
+                <span>📞 {{ student.phone }}</span>
+            </div>
+            <div style="margin-top:8px; display:flex; gap:6px;">
                 <span class="badge badge-blue">{{ student.grade|grade_label }}</span>
                 <span class="badge badge-purple">{{ student.gender|capfirst }}</span>
-                <br>
-                <a class="view-btn" href="{% url 'student_detail' student.slug %}">
-                    View Details →
-                </a>
+                {% if student.is_active %}
+                    <span class="badge badge-green">Active</span>
+                {% endif %}
             </div>
         </div>
-    {% empty %}
-        <div class="empty-card">No students found.</div>
-    {% endfor %}
+        <div class="card-actions">
+            <a href="{% url 'student_detail' student.slug %}" class="btn btn-secondary">
+                View →
+            </a>
+        </div>
+    </div>
+{% empty %}
+    <div class="empty-state">
+        <div class="icon">🎓</div>
+        <h3>No students yet</h3>
+        <p>Add your first student to get started</p>
+        <a href="{% url 'student_create' %}" class="btn btn-primary btn-lg">
+            + Add Student
+        </a>
+    </div>
+{% endfor %}
+
 {% endblock %}
